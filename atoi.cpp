@@ -11,10 +11,10 @@ using namespace std;
 #define ll __int64
 const int N = 500000 + 5;
 
-#define isSpace(c)  (c == ' ' || c == '\t' || c == '\r' || c == '\n' || c == '\b' || c == '\f')
-#define isDigit(c) (c >= '0' && c <= '9')
-#define isAlph(c)  (c >= 'a' && c <= 'f')
-#define tolower(c) (c >= 'A' && c <= 'F' ? 'a' + c - 'A': c)
+#define isSpace(c)  ((c) == ' ' || (c) == '\t' || (c) == '\r' || (c) == '\n' || (c) == '\b' || (c) == '\f')
+#define isDigit(c) ((c) >= '0' && (c) <= '9')
+#define isAlph(c)  ((c) >= 'a' && (c) <= 'f')
+#define tolower(c) (((c) >= 'A' && (c) <= 'Z') ? ('a' + (c) - 'A'): (c))
 enum status{kInValid = 0,kValid};
 int g_status = kValid;
 
@@ -59,7 +59,7 @@ int StrToInt(const char *str,unsigned int BASE = 0){
 			unsigned int val; 
 			if(isDigit(*str))
 				val =  *str - '0';
-			else if(isDigit(tolower(*str)))
+			else if(isAlph(tolower(*str)))
 				val = tolower(*str) - 'a' + 10;
 			else 
 				break;
@@ -67,11 +67,11 @@ int StrToInt(const char *str,unsigned int BASE = 0){
 			if(val >= BASE)
 				break;
 			//Òç³ö
-			if(!sign && (num > MAX_DIV || (num == MAX_DIV && val > MAX_RAD))){
+			if(!sign && (num > MAX_DIV || (num == MAX_DIV && val >= MAX_RAD))){
 				g_status = kInValid;
 				num = MAX;
 				break;
-			}else if(sign && (num > MIN_DIV || (num == MIN_DIV && val > MIN_RAD))){
+			}else if(sign && (num > MIN_DIV || (num == MIN_DIV && val >= MIN_RAD))){
 				g_status = kInValid;
 				num = MIN;
 				break;
@@ -94,7 +94,6 @@ int StrToInt(const char *str,unsigned int BASE = 0){
 int main(){
 	char str[100 + 2];
 	while(scanf("%s",str) != EOF){
-		int Base = 0;
 		int num = StrToInt(str);
 		if(g_status)
 			printf("%d\n",num);
