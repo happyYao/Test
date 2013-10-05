@@ -48,10 +48,10 @@ int StrToInt(const char *str,unsigned int BASE = 0){
 
 		//¼ÆËãMAX,MIN
 		static const int MAX = (int)((unsigned)~0 >> 1);
-		const  int MAX_DIV = (int)(((unsigned)~0 >> 1) / BASE);
+		const  int MAX_DIV = -(int)(((unsigned)~0 >> 1) / BASE);
 		const  int MAX_RAD = (int)(((unsigned)~0 >> 1) % BASE);
 		static const int MIN = -(int)((unsigned)~0 >> 1) - 1;
-		const int MIN_DIV = (int)((((unsigned)~0 >> 1) + 1) / BASE);
+		const int MIN_DIV = -(int)((((unsigned)~0 >> 1) + 1) / BASE);
 		const int MIN_RAD = (int)((((unsigned)~0 >> 1) + 1) % BASE);
 
 		while(*str){
@@ -67,22 +67,22 @@ int StrToInt(const char *str,unsigned int BASE = 0){
 			if(val >= BASE)
 				break;
 			//Òç³ö
-			if(!sign && (num > MAX_DIV || (num == MAX_DIV && val >= MAX_RAD))){
+			if(!sign && (num < MAX_DIV || (num == MAX_DIV && val > MAX_RAD))){
 				g_status = kInValid;
 				num = MAX;
 				break;
-			}else if(sign && (num > MIN_DIV || (num == MIN_DIV && val >= MIN_RAD))){
+			}else if(sign && (num < MIN_DIV || (num == MIN_DIV && val > MIN_RAD))){
 				g_status = kInValid;
 				num = MIN;
 				break;
 			}
 			
 			mark = true;
-			num = num * BASE + val;
+			num = num * BASE - val;
 			str++;
 		}
         if(mark){
-			if(sign && num > 0)
+			if(!sign && num < 0)
 				num = 0 - num;
 			return num;
 		}
