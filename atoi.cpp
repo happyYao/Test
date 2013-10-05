@@ -99,7 +99,7 @@ int main(){
 		if(g_status)
 			printf("%d\n",num);
 		else
-			printf("My God\n");
+			printf("Bad Input\n");
 	}
 	return 0;
 }
